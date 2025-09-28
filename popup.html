@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch Points Claimer</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="icons/icon48.png" alt="Twitch Points" class="logo">
+            <h1>Twitch Points Claimer</h1>
+        </div>
+        
+        <!-- Not on Twitch View -->
+        <div id="notOnTwitch" class="not-twitch-section" style="display: none;">
+            <div class="message-card">
+                <div class="message-icon">📺</div>
+                <div class="message-title">Not on Twitch</div>
+                <div class="message-text">Navigate to Twitch to start claiming points automatically!</div>
+            </div>
+            <button id="openTwitch" class="action-btn primary full-width">
+                <span>Open Twitch</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- On Twitch View -->
+        <div id="onTwitch" class="twitch-section">
+            <div class="channel-info" id="channelInfo" style="display: none;">
+                <div class="channel-avatar" id="channelAvatar"></div>
+                <div class="channel-details">
+                    <div class="channel-name" id="channelName">Loading...</div>
+                    <div class="channel-category" id="channelCategory">Twitch Stream</div>
+                </div>
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span>LIVE</span>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-label">Total Points Claimed</div>
+                    <div class="stat-value" id="totalPoints">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Drops Claimed</div>
+                    <div class="stat-value" id="totalDrops">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sessions Today</div>
+                    <div class="stat-value" id="sessionsToday">0</div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="control-item">
+                    <label class="toggle-label">
+                        <span>Auto Claim Points</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="autoClaimPoints" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="control-item">
+                    <label class="toggle-label">
+                        <span>Auto Claim Drops</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="autoClaimDrops" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="control-item">
+                    <label class="toggle-label">
+                        <span>Enable Notifications</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="enableNotifications" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text" id="statusText">Initializing...</span>
+                </div>
+            </div>
+
+            <div class="actions-section">
+                <button id="openDashboard" class="action-btn primary full-width">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="9" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="5" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="12" width="7" height="9" rx="1" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="16" width="7" height="5" rx="1" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Open Dashboard</span>
+                </button>
+                <div class="actions-row">
+                    <button id="resetStats" class="action-btn secondary">Reset Stats</button>
+                    <button id="testClaim" class="action-btn primary">Test Claim</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <small>v1.0.0 | Made with ❤️ for Twitch</small>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch Points Claimer - Dashboard</title>
+    <link rel="stylesheet" href="stats.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body data-theme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fab fa-twitch"></i>
+                <h1>Twitch Points Claimer</h1>
+                <span class="version">v1.1.0</span>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" class="theme-btn">
+                    <i class="fas fa-palette"></i>
+                    <span>Theme</span>
+                </button>
+                <button id="refreshData" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Refresh</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Theme Selector -->
+    <div id="themeSelector" class="theme-selector hidden">
+        <div class="theme-options">
+            <div class="theme-option" data-theme="dark">
+                <div class="theme-preview dark"></div>
+                <span>Dark</span>
+            </div>
+            <div class="theme-option" data-theme="light">
+                <div class="theme-preview light"></div>
+                <span>Light</span>
+            </div>
+            <div class="theme-option" data-theme="purple">
+                <div class="theme-preview purple"></div>
+                <span>Purple</span>
+            </div>
+            <div class="theme-option" data-theme="blue">
+                <div class="theme-preview blue"></div>
+                <span>Ocean</span>
+            </div>
+            <div class="theme-option" data-theme="green">
+                <div class="theme-preview green"></div>
+                <span>Forest</span>
+            </div>
+            <div class="theme-option" data-theme="red">
+                <div class="theme-preview red"></div>
+                <span>Gaming</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview Stats -->
+        <section class="overview-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Overview Statistics
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-card total-points">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalPointsValue">0</div>
+                        <div class="stat-label">Total Points Claimed</div>
+                        <div class="stat-change" id="pointsChange">+0 today</div>
+                    </div>
+                </div>
+
+                <div class="stat-card total-drops">
+                    <div class="stat-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalDropsValue">0</div>
+                        <div class="stat-label">Drops Claimed</div>
+                        <div class="stat-change" id="dropsChange">+0 this week</div>
+                    </div>
+                </div>
+
+                <div class="stat-card active-days">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="activeDaysValue">0</div>
+                        <div class="stat-label">Active Days</div>
+                        <div class="stat-change" id="streakChange">Current streak</div>
+                    </div>
+                </div>
+
+                <div class="stat-card avg-daily">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="avgDailyValue">0</div>
+                        <div class="stat-label">Daily Average</div>
+                        <div class="stat-change" id="avgChange">points per day</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">
+                        <i class="fas fa-line-chart"></i>
+                        Points Claimed Over Time
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="pointsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-title">
+                        <i class="fas fa-pie-chart"></i>
+                        Activity Distribution
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Streamers -->
+        <section class="streamers-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Most Watched Streamers
+            </h2>
+            <div class="streamers-grid" id="streamersGrid">
+                <!-- Streamer cards will be populated here -->
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="activity-section">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Recent Activity
+            </h2>
+            <div class="activity-feed" id="activityFeed">
+                <!-- Activity items will be populated here -->
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="settings-section">
+            <h2 class="section-title">
+                <i class="fas fa-cog"></i>
+                Settings & Preferences
+            </h2>
+            <div class="settings-grid">
+                <div class="setting-group">
+                    <h3>Auto-Claiming</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Auto Claim Points</label>
+                            <p>Automatically claim bonus channel points</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="autoClaimPoints">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Auto Claim Drops</label>
+                            <p>Automatically claim Twitch drops when available</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="autoClaimDrops">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>Notifications</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Enable Notifications</label>
+                            <p>Show notifications when points/drops are claimed</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="enableNotifications">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Sound Notifications</label>
+                            <p>Play sound when claiming points (coming soon)</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="soundNotifications" disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>Advanced</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Claiming Interval</label>
+                            <p>How often to check for claimable points</p>
+                        </div>
+                        <div class="setting-control">
+                            <select id="claimingInterval">
+                                <option value="2000">Every 2 seconds</option>
+                                <option value="3000" selected>Every 3 seconds</option>
+                                <option value="5000">Every 5 seconds</option>
+                                <option value="10000">Every 10 seconds</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label>Debug Mode</label>
+                            <p>Enable detailed console logging</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" id="debugMode">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Danger Zone -->
+        <section class="danger-section">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Data Management
+            </h2>
+            <div class="danger-actions">
+                <button id="exportData" class="action-btn secondary">
+                    <i class="fas fa-download"></i>
+                    Export Data
+                </button>
+                <button id="importData" class="action-btn secondary">
+                    <i class="fas fa-upload"></i>
+                    Import Data
+                </button>
+                <button id="resetStats" class="action-btn danger">
+                    <i class="fas fa-trash"></i>
+                    Reset All Statistics
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Loading dashboard...</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="stats.js"></script>
+</body>
+</html>
